@@ -4,8 +4,6 @@
     <img src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" alt="Documentation" />
 </p>
 
-***
-
 ## Information
 
 ### 🏠 [Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
