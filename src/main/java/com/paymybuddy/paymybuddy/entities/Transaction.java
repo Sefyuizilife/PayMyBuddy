@@ -1,6 +1,7 @@
 package com.paymybuddy.paymybuddy.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Transaction {
@@ -8,6 +9,8 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne
     private User donor;
@@ -30,6 +33,17 @@ public class Transaction {
     public void setId(Long id) {
 
         this.id = id;
+    }
+
+
+    public LocalDateTime getCreatedAt() {
+
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+
+        this.createdAt = createdAt;
     }
 
     public String getDescription() {
