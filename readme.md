@@ -40,7 +40,6 @@ CREATE DATABASE `pay_my_buudy`
 
 - Copy the file "application.properties.example"
 - Rename it to "application.properties"
-- Provide the requested configuration information
-
+- Provide the requested configuration information in [bracket].
 ***
 
