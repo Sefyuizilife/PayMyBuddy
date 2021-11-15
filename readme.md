@@ -1,8 +1,8 @@
-<h1 align="center">Welcome to PayMyBuddy 👋</h1>
 <p align="end">
     <img src="https://img.shields.io/badge/version-0 -blue.svg?cacheSeconds=2592000"  alt="Version"/>
     <img src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" alt="Documentation" />
 </p>
+<h1 align="center">Welcome to PayMyBuddy 👋</h1>
 
 ***
 
