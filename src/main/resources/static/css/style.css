@@ -1,0 +1,155 @@
+/* ------------- GENERAL ------------- */
+/* -- RESET FOR ALL WEB BROWSERS --  */
+
+* {
+    margin:  0;
+    padding: 0;
+}
+
+body {
+    align-content:   center;
+    display:         flex;
+    flex-direction:  column;
+    font-family:     Montserrat, Arial, cursive;
+    font-size:       20px;
+    justify-content: center;
+}
+
+.bg-white {
+    background-color: rgba(0, 0, 0, .03)
+}
+
+.custom-green {
+    background-color: rgba(3, 142, 3, 0.79);
+    color:            white;
+}
+
+/* ------------- HEADER ------------- */
+
+.logo {
+    background:    linear-gradient(
+                           to bottom right,
+                           rgba(98, 185, 89, 255),
+                           rgba(137, 194, 74, 255)
+                   );
+    border:        white;
+    border-radius: 7px;
+    font-size:     22px;
+    height:        50px;
+    min-width:     175px;
+}
+
+
+/* -------------- MAIN -------------- */
+
+main {
+    margin:    auto;
+    min-width: 80vh;
+}
+
+.donor {
+    display:         flex;
+    justify-content: space-evenly;
+    margin:          auto;
+    padding:         2em 0;
+    width:           75%;
+}
+
+.login {
+    display:        flex;
+    flex-direction: column;
+    margin:         auto;
+    max-width:      50vh;
+    padding:        2em;
+}
+
+.login-form {
+    display:        flex;
+    flex-direction: column;
+}
+
+form > * > .login-form {
+    min-width: 100%;
+}
+
+form > div > label > input {
+
+}
+
+.donor .field {
+    flex:   0.3;
+    margin: 0 1.5em;
+}
+
+.field > * {
+    height: 40px;
+}
+
+.field > * {
+    min-width: 200px;
+}
+
+.page {
+    display:         flex;
+    flex-direction:  row;
+    justify-content: center;
+    margin:          auto;
+}
+
+.page > a {
+    border:      1px darkgray solid;
+    height:      2.5rem;
+    line-height: 35px;
+    text-align:  center;
+    width:       2.5rem;
+}
+
+th {
+    height:     5em;
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+/* ------------- FOOTER ------------- */
+
+/* ---------- MEDIA QUERIES --------- */
+/*  ==========> COMPUTER <========== */
+
+@media screen and (min-width: 2048px) {
+
+    main {
+        max-width: 1400px;
+    }
+
+}
+
+/*  ===========> TABLET <========== */
+
+@media screen and (max-width: 860px) {
+
+    .donor {
+        display:        flex;
+        flex-direction: column;
+    }
+
+    .donor .field {
+        flex-grow: 1;
+        height:    35px;
+        margin:    0.5em 0;
+        width:     100%;
+    }
+
+    .donor .field > * {
+        width: 100%
+    }
+}
+
+/*  ===========> PHONE <=========== */
+
