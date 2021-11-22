@@ -26,16 +26,10 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @ManyToMany
-    private List<User> contacts;
+    private List<User> contacts = new ArrayList<>();
 
     public User() {
 
-    }
-
-    public User(String email, String password) {
-
-        this.email    = email;
-        this.password = password;
     }
 
     public String getFullName() {
@@ -81,16 +75,6 @@ public class User implements UserDetails {
     public void setEmail(String email) {
 
         this.email = email;
-    }
-
-    public String getPassword() {
-
-        return password;
-    }
-
-    public void setPassword(String password) {
-
-        this.password = password;
     }
 
     public String getIBAN() {
@@ -143,20 +127,35 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public String getRoleName() {
 
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority(""));
-
-        return authorityList;
+        return "USER";
     }
 
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.getRoleName()));
+        return authorities;
+    }
+
+    public String getPassword() {
+
+        return password;
+    }
+
+    public void setPassword(String password) {
+
+        this.password = password;
+
+    }
+
+    @Override
     public String getUsername() {
 
-        return this.getEmail();
+        return this.email;
     }
 
     @Override
