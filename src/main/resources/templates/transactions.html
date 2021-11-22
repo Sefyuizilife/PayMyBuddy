@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:replace="fragments/head.html :: head"></div>
+
+<body>
+<nav>
+    <div class="navbar bg-white px-3">
+        <button class="btn btn-success logo" type="button">Pay My Buddy</button>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#">Transfert</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Log off</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar bg-light">
+        <ul class="nav d-flex">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">/</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Transfert</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main>
+    <section class="py-3">
+        <div class="d-flex justify-content-between align-self-end mt-3">
+            <h1>Send Money</h1>
+            <button class="btn-primary btn align-self-center px-4">Add Connection</button>
+        </div>
+        <form
+                class="d-flex justify-content-around bg-light" method="POST"
+                th:action="@{/transactions}"
+        >
+            <div class="donor">
+
+                <input th:name="donor" th:value="${user.getId()}" type="hidden">
+
+                <label class="field">
+                    <select th:name="beneficiary">
+                        <option disabled selected>-- Select A Connexion --</option>
+                        <option
+                                th:each="beneficiary : ${beneficiaries}"
+                                th:text="${beneficiary.getFullName()}"
+                                th:value="${beneficiary.getId()}"
+                        ></option>
+                    </select>
+                </label>
+                <label class="field">
+                    <input min="0.01" step="0.01" th:name="amount" th:value="0.00" type="number">
+                </label>
+                <div class="field">
+                    <button
+                            class="btn btn-success custom-green" data-bs-target="#staticBackdrop"
+                            data-bs-toggle="modal"
+                            type="button"
+                    >
+                        Pay
+                    </button>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div
+                    aria-hidden="true"
+                    aria-labelledby="staticBackdropLabel"
+                    class="modal fade"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    id="staticBackdrop"
+                    tabindex="-1"
+            >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <label class="field form-control border-light">
+                                <input
+                                        class="field form-control"
+                                        placeholder="Please add a short description"
+                                        th:name="description"
+                                        type=text
+                                        value=""
+                                >
+                            </label>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+                            <button class="btn btn-primary" type="submit">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section>
+        <h1>My transactions</h1>
+        <table class="table table-striped border">
+            <thead class="custom-green align-middle">
+            <th class="custom-green" colspan="2">Connexions</th>
+            <th class="custom-green" colspan="5">Descriptions</th>
+            <th class="custom-green" colspan="1">Amounts</th>
+            </thead>
+            <tbody>
+            <tr th:each="transaction : ${transactions}">
+                <td colspan="2" th:text="${transaction.beneficiary.getFullName()}"></td>
+                <td colspan="5" th:text="${transaction.description}"></td>
+                <td colspan="1" th:text="${transaction.amount}"></td>
+            </tr>
+            <td colspan="8" th:if="${transactions.size() <= 0}">No data available at the moment</td>
+            </tbody>
+        </table>
+        <div class="page">
+            <a class="rounded-start btn">«</a>
+            <a class="btn">1</a>
+            <a class="btn">2</a>
+            <a class="btn">3</a>
+            <a class="btn">4</a>
+            <a class="btn">5</a>
+            <a class="rounded-end btn">»</a>
+        </div>
+    </section>
+</main>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+></script>
+</body>
+</html>
