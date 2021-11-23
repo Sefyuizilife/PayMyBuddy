@@ -66,6 +66,10 @@
             <version>3.21.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -83,6 +87,12 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/configurations/*</exclude>
+                        <exclude>**/entities/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -100,5 +110,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
