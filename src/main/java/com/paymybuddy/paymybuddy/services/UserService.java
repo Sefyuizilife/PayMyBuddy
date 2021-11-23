@@ -18,10 +18,6 @@ public class UserService implements UserDetailsService {
     private final UserRepository        userRepository;
     private final BCryptPasswordEncoder encoder;
 
-    @Value("${defaultUser.email:#{null}}")
-    private String email;
-    @Value("${defaultUser.password:#{null}}")
-    private String password;
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
 
