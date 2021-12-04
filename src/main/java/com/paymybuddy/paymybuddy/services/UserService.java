@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,4 +49,19 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findByEmail(email);
     }
 
+    public boolean addContact(String email, User user) {
+
+        Optional<User> contact = this.userRepository.findByEmail(email);
+
+        if (contact.isPresent()) {
+
+            List<User> contacts = user.getContacts();
+            contacts.add(contact.get());
+            this.userRepository.save(user);
+
+            return true;
+        }
+
+        return false;
+    }
 }

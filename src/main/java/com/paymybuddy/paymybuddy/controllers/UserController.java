@@ -3,13 +3,11 @@ package com.paymybuddy.paymybuddy.controllers;
 import com.paymybuddy.paymybuddy.entities.User;
 import com.paymybuddy.paymybuddy.services.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -21,30 +19,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("signup")
-    public String signup() {
+    @PostMapping("connect")
+    public String connect(Principal principal, String email, RedirectAttributes redirectAttributes) {
 
-        return "signup";
-    }
+        User currentUser = this.userService.findByEmail(principal.getName()).orElseThrow();
 
-    @PostMapping("users/{id}/links")
-    public String addConnexions(@ModelAttribute String email, @PathVariable Long id, Model model) {
+        if (this.userService.addContact(email, currentUser)) {
 
-        User user = this.userService.findById(id).orElseThrow();
-
-        Optional<User> contact = this.userService.findByEmail(email);
-
-        if (contact.isPresent()) {
-
-            model.addAttribute("alert", "success");
+            redirectAttributes.addAttribute("alert", "success");
 
         } else {
 
-            model.addAttribute("alert, warning");
-
+            redirectAttributes.addAttribute("alert", "failed");
         }
 
-        return "transactions";
+        return "redirect:transactions";
     }
 
     @GetMapping("/login")
