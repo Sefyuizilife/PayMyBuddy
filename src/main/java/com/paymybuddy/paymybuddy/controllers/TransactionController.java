@@ -5,17 +5,14 @@ import com.paymybuddy.paymybuddy.entities.User;
 import com.paymybuddy.paymybuddy.services.TransactionService;
 import com.paymybuddy.paymybuddy.services.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -32,29 +29,37 @@ public class TransactionController {
     }
 
     @GetMapping()
-    public String browseByUser(Model model) {
+    public String browseByUser(Principal principal, Model model, @RequestParam(required = false) String alert, @RequestParam(required = false) Integer page) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User currentUser = this.userService.findByEmail(auth.getName())
+        User currentUser = this.userService.findByEmail(principal.getName())
                                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         List<Transaction> transactions = this.transactionService.readAllByUser(currentUser);
 
-        model.addAttribute("user", currentUser);
+        int indexBegin = page == null || page == 0 ? 0 : page * 3 - 3;
+        int indexEnd   = Math.min((page == null || page == 0 ? 3 : page * 3), transactions.size());
+
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("beneficiaries", currentUser.getContacts());
-        model.addAttribute("transactions", transactions);
+        model.addAttribute("transactions", transactions.subList(indexBegin, indexEnd));
+        model.addAttribute("totalPages", transactions.size() / 3);
+        model.addAttribute("alert", alert);
 
         return "transactions";
     }
 
     @PostMapping()
-    public String create(Authentication auth, @ModelAttribute Transaction transaction, Model model) throws IOException {
+    public String create(Principal principal, @ModelAttribute Transaction transaction, RedirectAttributes redirectAttributes) throws IOException {
 
+        User currentUser = this.userService.findByEmail(principal.getName())
+                                           .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        transaction.setDonor(currentUser);
 
         this.transactionService.create(transaction);
 
-        model.addAttribute("alert", "success");
-        return "redirect:/transactions";
+        redirectAttributes.addAttribute("alert", "success");
+
+        return "redirect:transactions";
     }
 }
