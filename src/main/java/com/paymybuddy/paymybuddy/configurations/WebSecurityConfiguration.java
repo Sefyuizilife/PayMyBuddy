@@ -32,6 +32,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         http.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/transactions");
+
+        http.logout().logoutSuccessUrl("/login");
     }
 
     @Override

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<body>
+<div th:fragment="alert" th:id="message" th:switch="${alert}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert" th:case="'success'">
+        The operation was successfully completed.
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:case="'failed'">
+        The operation has failed.
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+</div>
+</body>
+</html>

@@ -2,7 +2,6 @@ package com.paymybuddy.paymybuddy.services;
 
 import com.paymybuddy.paymybuddy.entities.User;
 import com.paymybuddy.paymybuddy.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +32,7 @@ public class UserService implements UserDetailsService {
                    .orElseThrow(() -> new UsernameNotFoundException("Email " + username + " not found"));
     }
 
-    public User create(User user) {
+    public User save(User user) {
 
         user.setPassword(encoder.encode(user.getPassword()));
         return this.userRepository.save(user);
