@@ -42,7 +42,7 @@ CREATE DATABASE `pay_my_buddy`
 
 ### 🏠 [Modèle physique de données](.readme/P6_MPD.png)
 
-![Modele physique de données](.readme/P6_MPD.png)
+![Model physique de données](.readme/P6_MPD.png)
 
 
 
