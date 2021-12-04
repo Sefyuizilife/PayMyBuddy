@@ -182,7 +182,8 @@
         <div class="page" th:if="${transactions.size() > 0}">
             <a class="rounded-start btn">«</a>
             <a
-                    class="btn" th:each="i: ${#numbers.sequence(0, totalPages)}"
+                    class="btn"
+                    th:each="i: ${#numbers.sequence(0, (totalTransactions %3 == 0 ? totalPages - 1 : totalPages))}"
                     th:href="@{/transactions(page=${i+1})}"
                     th:text="${i+1}"
             ></a>

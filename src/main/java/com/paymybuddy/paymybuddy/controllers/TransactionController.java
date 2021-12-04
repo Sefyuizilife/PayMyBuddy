@@ -42,6 +42,7 @@ public class TransactionController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("beneficiaries", currentUser.getContacts());
         model.addAttribute("transactions", transactions.subList(indexBegin, indexEnd));
+        model.addAttribute("totalTransactions", transactions.size());
         model.addAttribute("totalPages", transactions.size() / 3);
         model.addAttribute("alert", alert);
 
