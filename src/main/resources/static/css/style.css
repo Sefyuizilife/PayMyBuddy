@@ -72,10 +72,6 @@ form > * > .login-form {
     min-width: 100%;
 }
 
-form > div > label > input {
-
-}
-
 .donor .field {
     flex:   0.3;
     margin: 0 1.5em;
