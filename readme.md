@@ -4,16 +4,6 @@
 </p>
 <h1 align="center">Welcome to PayMyBuddy 👋</h1>
 
-## Information
-
-### 🏠 [Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
-
-![Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
-
-### 🏠 [Modèle physique de données](.readme/P6_MPD.png)
-
-![Modele physique de données](.readme/P6_MPD.png)
-
 ## Getting Started
 
 ### Prerequisites
@@ -33,7 +23,7 @@ mysql -u [username] -p
 *Enter your MySQL password*
 
 ```
-CREATE DATABASE `pay_my_buudy`
+CREATE DATABASE `pay_my_buddy`
 ```
 
 ### Configuration
@@ -41,5 +31,18 @@ CREATE DATABASE `pay_my_buudy`
 - Copy the file "application.properties.example"
 - Rename it to "application.properties"
 - Provide the requested configuration information in [bracket].
+
 ***
+
+## More Information
+
+### 🏠 [Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
+
+![Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
+
+### 🏠 [Modèle physique de données](.readme/P6_MPD.png)
+
+![Model physique de données](.readme/P6_MPD.png)
+
+
 
