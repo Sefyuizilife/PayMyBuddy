@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
+/**
+ * Controller specifically for managing the {@link Transaction}.
+ */
 @Controller
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -22,22 +25,45 @@ public class TransactionController {
     private final TransactionService transactionService;
     private final UserService        userService;
 
+    /**
+     * Create a new instance of this {@link TransactionController}. This will be done automatically by SpringBoot with
+     * dependencies injection.
+     *
+     * @param transactionService
+     *         instance of {@link TransactionService} .
+     * @param userService
+     *         instance of {@link UserService}
+     */
     public TransactionController(TransactionService transactionService, UserService userService) {
 
         this.transactionService = transactionService;
         this.userService        = userService;
     }
 
+    /**
+     * Retrieve a view containing the list of {@link Transaction} for the logged-in {@link User}.
+     *
+     * @param principal
+     *         represents the currently logged-in user.
+     * @param model
+     *         provides the attributes used by the views.
+     * @param alert
+     *         optional parameter of type {@link String} to alert the result of a user action.
+     * @param pageNumber
+     *         optional parameter that defines the page to send.
+     *
+     * @return a {@link String} that refers to the name of a view
+     */
     @GetMapping()
-    public String browseByUser(Principal principal, Model model, @RequestParam(required = false) String alert, @RequestParam(required = false) Integer page) {
+    public String browseByUser(Principal principal, Model model, @RequestParam(required = false) String alert, @RequestParam(required = false) Integer pageNumber) {
 
         User currentUser = this.userService.findByEmail(principal.getName())
                                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         List<Transaction> transactions = this.transactionService.readAllByUser(currentUser);
 
-        int indexBegin = page == null || page == 0 ? 0 : page * 3 - 3;
-        int indexEnd   = Math.min((page == null || page == 0 ? 3 : page * 3), transactions.size());
+        int indexBegin = pageNumber == null || pageNumber == 0 ? 0 : pageNumber * 3 - 3;
+        int indexEnd   = Math.min((pageNumber == null || pageNumber == 0 ? 3 : pageNumber * 3), transactions.size());
 
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("beneficiaries", currentUser.getContacts());
@@ -49,17 +75,37 @@ public class TransactionController {
         return "transactions";
     }
 
+    /**
+     * Create a {@link Transaction} for the logged-in {@link User}.
+     *
+     * @param principal
+     *         represents the currently logged-in user.
+     * @param transaction
+     *         represents the transaction to be recorded.
+     * @param redirectAttributes
+     *         is linked to the {@link Model} interface and adds attributes for the redirection.
+     *
+     * @return a {@link String} that refers to the name of a view.
+     */
     @PostMapping()
-    public String create(Principal principal, @ModelAttribute Transaction transaction, RedirectAttributes redirectAttributes) throws IOException {
+    public String create(Principal principal, @ModelAttribute Transaction transaction, RedirectAttributes redirectAttributes) {
 
         User currentUser = this.userService.findByEmail(principal.getName())
                                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         transaction.setDonor(currentUser);
 
-        this.transactionService.create(transaction);
+        try {
 
-        redirectAttributes.addAttribute("alert", "success");
+            if (this.transactionService.create(transaction) != null) {
+
+                redirectAttributes.addAttribute("alert", "success");
+            }
+
+        } catch (IOException e) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+        }
 
         return "redirect:transactions";
     }

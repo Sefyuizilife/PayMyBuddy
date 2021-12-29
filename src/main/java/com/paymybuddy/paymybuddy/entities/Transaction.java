@@ -3,6 +3,9 @@ package com.paymybuddy.paymybuddy.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * This class represents a bank transfer.
+ */
 @Entity
 public class Transaction {
 

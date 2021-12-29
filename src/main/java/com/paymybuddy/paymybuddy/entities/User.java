@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This class implements {@link UserDetails}, so it can connect to Spring Security, this {@link User} can have contacts
+ * and also be one.
+ */
 @Entity
 public class User implements UserDetails {
 
@@ -32,6 +36,11 @@ public class User implements UserDetails {
 
     }
 
+    /**
+     * Retrieves the full name of a {@link User}.
+     *
+     * @return a {@link String}
+     */
     public String getFullName() {
 
         return String.format("%s %s", this.lastName, this.firstName);
@@ -127,20 +136,6 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
-    public String getRoleName() {
-
-        return "USER";
-    }
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.getRoleName()));
-        return authorities;
-    }
-
     public String getPassword() {
 
         return password;
@@ -152,30 +147,79 @@ public class User implements UserDetails {
 
     }
 
+    /**
+     * Retrieve static permissions from user.
+     *
+     * @return a {@link List} of {@link GrantedAuthority}.
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.getRoleName()));
+        return authorities;
+    }
+
+    /**
+     * Retrieve the role name of {@link User}
+     *
+     * @return a {@link String}
+     */
+    public String getRoleName() {
+
+        return "USER";
+    }
+
+    /**
+     * Retrieve User Information
+     *
+     * @return a {@link User#email}
+     */
     @Override
     public String getUsername() {
 
         return this.email;
     }
 
+
+    /**
+     * Spring Security features that must be implemented but are not used for this project.
+     *
+     * @return static {@link Boolean} with always a true value
+     */
     @Override
     public boolean isAccountNonExpired() {
 
         return true;
     }
 
+    /**
+     * Spring Security features that must be implemented but are not used for this project.
+     *
+     * @return static {@link Boolean} with always a true value
+     */
     @Override
     public boolean isAccountNonLocked() {
 
         return true;
     }
 
+    /**
+     * Spring Security features that must be implemented but are not used for this project.
+     *
+     * @return static {@link Boolean} with always a true value
+     */
     @Override
     public boolean isCredentialsNonExpired() {
 
         return true;
     }
 
+    /**
+     * Spring Security features that must be implemented but are not used for this project.
+     *
+     * @return static {@link Boolean} with always a true value
+     */
     @Override
     public boolean isEnabled() {
 

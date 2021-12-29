@@ -10,7 +10,7 @@
 
 - Maven 3.6+
 - Install Java 8+
-- Mysql
+- Mysql 8+
 
 ### Database
 
@@ -32,17 +32,38 @@ CREATE DATABASE `pay_my_buddy`
 - Rename it to "application.properties"
 - Provide the requested configuration information in [bracket].
 
+### Deployment
+
+- place your terminal at the root of the project and run  
+  the command lines below
+
+```
+ mvn clean deploy -DaltDeploymentRepository=internal.repo::default::file://./target/jar -PROD
+```
+
+*deletes all compiled files to start from scratch and compile the program in .jar extension in the target folder located
+at the root of the project*
+
+### Start application
+
+- place your terminal at the root of the project and run  
+  the command lines below
+
+```
+java -jar ./target/paymybuddy-0.0.1-SNAPSHOT.jar
+```
+
 ***
 
 ## More Information
 
-### 🏠 [Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
+### 🏠 [UML class diagram](.readme/P6_Diagramme_de_classe_UML.png)
 
-![Diagramme de classe UML](.readme/P6_Diagramme_de_classe_UML.png)
+![UML class diagram](.readme/P6_Diagramme_de_classe_UML.png)
 
-### 🏠 [Modèle physique de données](.readme/P6_MPD.png)
+### 🏠 [Physical data model](.readme/P6_MPD.png)
 
-![Model physique de données](.readme/P6_MPD.png)
+![Physical data model](.readme/P6_MPD.png)
 
 
 
