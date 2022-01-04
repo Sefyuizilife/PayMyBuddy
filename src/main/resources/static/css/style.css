@@ -1,7 +1,7 @@
 /* ------------- GENERAL ------------- */
 /* -- RESET FOR ALL WEB BROWSERS --  */
 
-* {
+*, p {
     margin:  0;
     padding: 0;
 }
@@ -37,6 +37,10 @@ body {
     font-size:     22px;
     height:        50px;
     min-width:     175px;
+}
+
+.btn-xl-custom {
+    width: 40px
 }
 
 
