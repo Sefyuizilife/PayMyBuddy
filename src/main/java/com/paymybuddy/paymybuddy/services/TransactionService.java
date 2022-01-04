@@ -44,8 +44,10 @@ public class TransactionService {
      *         represents the banking operation to be created.
      *
      * @return the banking operation created
+     *
+     * @throws IOException
+     *         when the {@link Transaction} has an id
      */
-
     @Transactional(propagation = Propagation.REQUIRED)
     public Transaction create(Transaction transaction) throws IOException {
 
@@ -71,8 +73,7 @@ public class TransactionService {
             this.userRepository.save(beneficiary);
         }
 
-        Transaction save = this.transactionRepository.save(transaction);
-        return save;
+        return this.transactionRepository.save(transaction);
     }
 
     /**
