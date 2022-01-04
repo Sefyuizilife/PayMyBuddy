@@ -13,16 +13,16 @@
         <button class="btn btn-success logo" type="button">Pay My Buddy</button>
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Home</a>
+                <a class="nav-link" href="#">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="#">Transfert</a>
+                <a class="nav-link disabled" th:href="@{/transactions}">Transfert</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Profile</a>
+                <a class="nav-link" href="#">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Contact</a>
+                <a class="nav-link" href="#">Contact</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/logout}">Log off</a>
@@ -32,7 +32,7 @@
     <div class="navbar bg-light">
         <ul class="nav d-flex">
             <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <span class="nav-link" href="#">Home</span>
             </li>
             <li class="nav-item">
                 <span class="nav-link">/</span>
@@ -41,9 +41,120 @@
                 <a class="nav-link disabled" href="#">Transfert</a>
             </li>
         </ul>
+        <form class="d-flex align-items-center mx-3">
+            <button
+                    class="btn btn-danger btn-xl-custom mx-1"
+                    data-bs-target="#withdrawMoney"
+                    data-bs-toggle="modal"
+                    type="button"
+            >
+                -
+            </button>
+            <p class="h-100 mx-1">
+                Cash available :
+                <span
+                        th:text="${#numbers.formatDecimal(currentUser.getMoneyAvailable(), 1, 'WHITESPACE', 2, 'COMMA')}"
+                >
+                    0.00
+                            </span>
+                €
+            </p>
+            <button
+                    class="btn btn-success btn-xl-custom mx-1"
+                    data-bs-target="#addMoney"
+                    data-bs-toggle="modal"
+                    type="button"
+            >
+                +
+            </button>
+        </form>
     </div>
 </nav>
 <main>
+    <!--            Modal for withdraw money            -->
+    <div
+            aria-hidden="true"
+            aria-labelledby="staticBackdropLabel"
+            class="modal fade"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            id="withdrawMoney"
+            tabindex="-1"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form
+                        class="justify-content-around bg-light" method="POST"
+                        th:action="@{/money}"
+                >
+                    <div class="modal-body">
+                        <label
+                                class="field form-control border-light"
+                        >To external account: <span
+                                class="font-weight-bold"
+                                th:text="${currentUser.getIBAN()}"
+                        ></span>
+                            <input
+                                    class="field form-control"
+                                    min="0.01"
+                                    placeholder="Enter the amount to withdraw"
+                                    step="0.01"
+                                    th:name="withdrawMoney"
+                                    type=number
+                                    value=""
+                            >
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--            Modal for add money            -->
+    <div
+            aria-hidden="true"
+            aria-labelledby="staticBackdropLabel"
+            class="modal fade"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            id="addMoney"
+            tabindex="-1"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form
+                        class="justify-content-around bg-light" method="POST"
+                        th:action="@{/money}"
+                >
+                    <div class="modal-body">
+                        <label
+                                class="field form-control border-light"
+                        >From external account: <span
+                                class="font-weight-bold"
+                                th:text="${currentUser.getIBAN()}"
+                        ></span>
+                            <input
+                                    class="field form-control"
+                                    min="0.01"
+                                    placeholder="Enter the amount to be added"
+                                    step="0.01"
+                                    th:name="addMoney"
+                                    type=number
+                                    value=""
+                            >
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <section class="py-3">
 
         <div th:replace="fragments/alert.html :: alert"></div>

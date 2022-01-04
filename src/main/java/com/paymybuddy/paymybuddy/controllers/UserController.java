@@ -2,10 +2,13 @@ package com.paymybuddy.paymybuddy.controllers;
 
 import com.paymybuddy.paymybuddy.entities.User;
 import com.paymybuddy.paymybuddy.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -51,6 +54,55 @@ public class UserController {
 
             redirectAttributes.addAttribute("alert", "success");
 
+        } else {
+
+            redirectAttributes.addAttribute("alert", "failed");
+        }
+
+        return "redirect:transactions";
+    }
+
+    /**
+     * Aggregates or subtracts a {@link Double} to a {@link User} according to its {@link User#getMoneyAvailable()}.
+     *
+     * @param principal
+     *         represents the logged-in user.
+     * @param redirectAttributes
+     *         is linked to the {@link Model} interface and adds attributes for the redirection.
+     * @param addMoney
+     *         is the amount to be added to the
+     * @param withdrawMoney
+     *         is the amount to be withdrawn from the account
+     *
+     * @return a {@link String} that refers to the name of a view.
+     */
+    @PostMapping("money")
+    public String getMoneyAvailable(Principal principal, RedirectAttributes redirectAttributes, @RequestParam(required = false) Double addMoney, @RequestParam(required = false) Double withdrawMoney) {
+
+        User currentUser = this.userService.findByEmail(principal.getName())
+                                           .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Double moneyAvailable = currentUser.getMoneyAvailable();
+
+        addMoney      = addMoney == null ? 0.00 : addMoney;
+        withdrawMoney = withdrawMoney == null ? 0.00 : withdrawMoney;
+
+        if (addMoney > 0) {
+
+            currentUser.setMoneyAvailable(moneyAvailable + addMoney);
+            this.userService.save(currentUser);
+            redirectAttributes.addAttribute("alert", "success");
+
+        } else if (withdrawMoney > 0) {
+
+            if (withdrawMoney <= moneyAvailable) {
+                currentUser.setMoneyAvailable(moneyAvailable - withdrawMoney);
+                this.userService.save(currentUser);
+                redirectAttributes.addAttribute("alert", "success");
+            } else {
+
+                redirectAttributes.addAttribute("alert", "failed");
+            }
         } else {
 
             redirectAttributes.addAttribute("alert", "failed");
