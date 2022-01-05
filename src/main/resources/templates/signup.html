@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:replace="fragments/head.html :: head"></div>
+
+<body>
+<main class="p-5">
+    <div class="login border border-dark rounded">
+        <button class="btn btn-success logo" type="button">Pay My Buddy</button>
+        <form class="d-flex login-form p-5" method="POST" th:action="@{/signup}">
+            <fieldset class="mb-3">
+                <div>
+                    <label th:text="#{label.user.firstName}">first</label>
+                    <input th:field="*{firstName}" />
+                    <p
+                            th:each="error: ${#fields.errors('firstName')}"
+                            th:text="${error}"
+                    >Validation error</p>
+                </div>
+                <div>
+                    <label th:text="#{label.user.lastName}">last</label>
+                    <input th:field="*{lastName}" />
+                    <p
+                            th:each="error : ${#fields.errors('lastName')}"
+                            th:text="${error}"
+                    >Validation error</p>
+                </div>
+                <div>
+                    <label th:text="#{label.user.email}">email</label>
+                    <input th:field="*{email}" type="email" />
+                    <p
+                            th:each="error : ${#fields.errors('email')}"
+                            th:text="${error}"
+                    >Validation error</p>
+                </div>
+                <div>
+                    <label th:text="#{label.user.password}">password</label>
+                    <input th:field="*{password}" type="password" />
+                    <p
+                            th:each="error : ${#fields.errors('password')}"
+                            th:text="${error}"
+                    >Validation error</p>
+                </div>
+                <div>
+                    <label th:text="#{label.user.confirmPass}">confirm</label>
+                    <input th:field="*{matchingPassword}" type="password" />
+                </div>
+            </fieldset>
+            <div class="mb-3">
+                <label class="form-label login-form">
+                    <input
+                            class="form-control"
+                            placeholder="Password"
+                            required
+                            th:name="password"
+                            type="password"
+                    >
+                </label>
+            </div>
+            <div class="mb-3 form-check mx-auto">
+                <label class="form-check-label " for="exampleCheck1">Remember me</label>
+                <input checked class="form-check-input text-center" id="exampleCheck1" type="checkbox">
+            </div>
+            <button class="btn btn-primary" type="submit">Login</button>
+        </form>
+    </div>
+</main>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+></script>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+></script>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+></script>
+</body>
+</html>

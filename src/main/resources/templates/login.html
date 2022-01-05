@@ -11,8 +11,8 @@
 <main class="p-5">
     <div class="login border border-dark rounded">
         <button class="btn btn-success logo" type="button">Pay My Buddy</button>
-        <form class="d-flex login-form p-5" method="POST" th:action="@{/login}">
-            <fieldset class="mb-3">
+        <form class="d-flex login-form login-group" method="POST" th:action="@{/login}">
+            <fieldset>
                 <div class="alert alert-error alert-warning" th:if="${param.error}">
                     Invalid username and password.
                 </div>
@@ -29,24 +29,26 @@
                             type="email"
                     >
                 </label>
+                <div class="mb-3">
+                    <label class="form-label login-form">
+                        <input
+                                class="form-control"
+                                placeholder="Password"
+                                required
+                                th:name="password"
+                                type="password"
+                        >
+                    </label>
+                </div>
             </fieldset>
-            <div class="mb-3">
-                <label class="form-label login-form">
-                    <input
-                            class="form-control"
-                            placeholder="Password"
-                            required
-                            th:name="password"
-                            type="password"
-                    >
-                </label>
-            </div>
             <div class="mb-3 form-check mx-auto">
                 <label class="form-check-label " for="exampleCheck1">Remember me</label>
                 <input checked class="form-check-input text-center" id="exampleCheck1" type="checkbox">
             </div>
             <button class="btn btn-primary" type="submit">Login</button>
         </form>
+        <hr>
+        <a class="text-center" th:href="@{/signup}">Sign Up</a>
     </div>
 </main>
 <script
