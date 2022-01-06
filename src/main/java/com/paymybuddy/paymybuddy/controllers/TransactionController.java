@@ -4,6 +4,8 @@ import com.paymybuddy.paymybuddy.entities.Transaction;
 import com.paymybuddy.paymybuddy.entities.User;
 import com.paymybuddy.paymybuddy.services.TransactionService;
 import com.paymybuddy.paymybuddy.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -22,8 +23,11 @@ import java.util.List;
 @RequestMapping("/transactions")
 public class TransactionController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
+
     private final TransactionService transactionService;
     private final UserService        userService;
+
 
     /**
      * Create a new instance of this {@link TransactionController}. This will be done automatically by SpringBoot with
@@ -95,18 +99,61 @@ public class TransactionController {
 
         transaction.setDonor(currentUser);
 
-        try {
+        if (this.validate(transaction, redirectAttributes)) {
 
-            if (this.transactionService.create(transaction) != null) {
-
-                redirectAttributes.addAttribute("alert", "success");
-            }
-
-        } catch (IOException e) {
-
-            redirectAttributes.addAttribute("alert", "failed");
+            return "redirect:transaction";
         }
 
+        if (this.transactionService.create(transaction) != null) {
+
+            redirectAttributes.addAttribute("alert", "success");
+        }
+
+        LOGGER.info(String.format("Invoice - Bank transfer from user %s (sender) to user %s (beneficiary), amounting to %s, the fee is %s.", transaction.getDonor()
+                                                                                                                                                        .getIban(), transaction.getBeneficiary()
+                                                                                                                                                                               .getId(), transaction.getAmount(), transaction.getAmount() * .05));
+
         return "redirect:transactions";
+    }
+
+    private boolean validate(Transaction transaction, RedirectAttributes redirectAttributes) {
+
+        if (transaction.getId() != null) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+            return false;
+        }
+
+        if (transaction.getDescription() == null || transaction.getDescription().isBlank()) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+            return false;
+        }
+
+        if (transaction.getAmount() <= 0) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+            return false;
+        }
+
+        if (transaction.getBeneficiary() == null) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+            return false;
+        }
+
+        if (transaction.getDonor() == null) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+            return false;
+        }
+
+        if (transaction.getDonor() == transaction.getBeneficiary()) {
+
+            redirectAttributes.addAttribute("alert", "failed");
+            return false;
+        }
+
+        return true;
     }
 }

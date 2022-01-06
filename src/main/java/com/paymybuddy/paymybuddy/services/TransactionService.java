@@ -49,11 +49,7 @@ public class TransactionService {
      *         when the {@link Transaction} has an id
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public Transaction create(Transaction transaction) throws IOException {
-
-        if (transaction.getId() != null) {
-            throw new IOException("Transaction id will be null");
-        }
+    public Transaction create(Transaction transaction) {
 
         User donor = this.userRepository.findById(transaction.getDonor().getId())
                                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.valueOf(404)));
