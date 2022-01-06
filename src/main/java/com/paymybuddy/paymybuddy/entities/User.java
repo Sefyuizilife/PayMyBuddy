@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String        firstName;
     private String        email;
     private String        password;
-    private String        IBAN;
+    private String        iban;
     private Double        moneyAvailable;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
@@ -61,9 +61,9 @@ public class User implements UserDetails {
         return lastName;
     }
 
-    public void setLastName(String lastname) {
+    public void setLastName(String lastName) {
 
-        this.lastName = lastname;
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -86,14 +86,14 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getIBAN() {
+    public String getIban() {
 
-        return IBAN;
+        return iban;
     }
 
-    public void setIBAN(String IBAN) {
+    public void setIban(String iban) {
 
-        this.IBAN = IBAN;
+        this.iban = iban;
     }
 
     public Double getMoneyAvailable() {

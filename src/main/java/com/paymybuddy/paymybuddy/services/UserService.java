@@ -58,6 +58,7 @@ public class UserService implements UserDetailsService {
     public User save(User user) {
 
         user.setPassword(encoder.encode(user.getPassword()));
+
         return this.userRepository.save(user);
     }
 
@@ -93,6 +94,7 @@ public class UserService implements UserDetailsService {
      * @param email
      *         of the contact to be linked
      * @param user
+     *         to which the contact ({@link User}) will be linked
      *
      * @return who is assigned the contact
      */

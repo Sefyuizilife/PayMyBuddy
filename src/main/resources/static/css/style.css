@@ -63,13 +63,17 @@ main {
     display:        flex;
     flex-direction: column;
     margin:         auto;
-    max-width:      50vh;
+    max-width:      33vh;
     padding:        2em;
 }
 
 .login-form {
     display:        flex;
     flex-direction: column;
+}
+
+.login-group {
+    padding: 2.5em 2.5em 1em 2.5em;
 }
 
 form > * > .login-form {

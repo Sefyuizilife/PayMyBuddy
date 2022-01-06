@@ -53,7 +53,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/static/**", "/h2-console/**").permitAll();
 
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/signup*").anonymous().anyRequest().authenticated();
 
         http.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/transactions");
 
@@ -66,7 +66,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @param authManagerBuilder
      *         allows for easily building in memory authentication
      *
-     * @throws Exception if an error occurs.
+     * @throws Exception
+     *         if an error occurs.
      */
     @Override
     protected void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
