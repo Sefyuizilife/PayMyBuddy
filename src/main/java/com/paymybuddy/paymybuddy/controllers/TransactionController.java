@@ -99,9 +99,9 @@ public class TransactionController {
 
         transaction.setDonor(currentUser);
 
-        if (this.validate(transaction, redirectAttributes)) {
+        if (!this.validate(transaction, redirectAttributes)) {
 
-            return "redirect:transaction";
+            return "redirect:transactions";
         }
 
         if (this.transactionService.create(transaction) != null) {
