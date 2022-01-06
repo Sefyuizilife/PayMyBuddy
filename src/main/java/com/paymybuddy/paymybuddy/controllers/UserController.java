@@ -1,10 +1,13 @@
 package com.paymybuddy.paymybuddy.controllers;
 
+import com.paymybuddy.paymybuddy.controllers.validator.UserValidator;
 import com.paymybuddy.paymybuddy.entities.User;
 import com.paymybuddy.paymybuddy.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,14 +114,32 @@ public class UserController {
         return "redirect:transactions";
     }
 
-    /**
-     * Shows the login page
-     *
-     * @return a {@link String} that refers to the name of a view.
-     */
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping("/signup")
+    public String signup(Model model) {
 
-        return "login";
+        model.addAttribute("user", new User());
+
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String signup(User user, BindingResult result) {
+
+        this.validate(user, result);
+
+        if (result.hasErrors()) {
+
+            return "signup";
+        }
+
+        user.setMoneyAvailable(0.0);
+        userService.save(user);
+
+        return "redirect:/login";
+    }
+
+    public void validate(User user, Errors errors) {
+
+        new UserValidator(this.userService).validate(user, errors);
     }
 }
