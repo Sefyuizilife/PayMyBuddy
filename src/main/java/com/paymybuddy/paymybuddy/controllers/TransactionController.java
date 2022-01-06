@@ -110,8 +110,8 @@ public class TransactionController {
         }
 
         LOGGER.info(String.format("Invoice - Bank transfer from user %s (sender) to user %s (beneficiary), amounting to %s, the fee is %s.", transaction.getDonor()
-                                                                                                                                                        .getIban(), transaction.getBeneficiary()
-                                                                                                                                                                               .getId(), transaction.getAmount(), transaction.getAmount() * .05));
+                                                                                                                                                        .getId(), transaction.getBeneficiary()
+                                                                                                                                                                             .getId(), transaction.getAmount(), transaction.getAmount() * .05));
 
         return "redirect:transactions";
     }
