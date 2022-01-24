@@ -67,10 +67,13 @@ public class TransactionService {
 
             this.userRepository.save(donor);
             this.userRepository.save(beneficiary);
+
+            return this.transactionRepository.save(transaction);
         }
 
-        return this.transactionRepository.save(transaction);
+        return null;
     }
+
 
     /**
      * Returns a {@link List} of {@link Transaction} linked to a {@link User}.
