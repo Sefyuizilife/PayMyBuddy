@@ -53,28 +53,28 @@ public class TransactionController {
      *         provides the attributes used by the views.
      * @param alert
      *         optional parameter of type {@link String} to alert the result of a user action.
-     * @param pageNumber
+     * @param page
      *         optional parameter that defines the page to send.
      *
      * @return a {@link String} that refers to the name of a view
      */
     @GetMapping()
-    public String browseByUser(Principal principal, Model model, @RequestParam(required = false) String alert, @RequestParam(required = false) Integer pageNumber) {
+    public String browseByUser(Principal principal, Model model, @RequestParam(required = false) String alert, @RequestParam(required = false) Integer page) {
 
         User currentUser = this.userService.findByEmail(principal.getName())
                                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         List<Transaction> transactions = this.transactionService.readAllByUser(currentUser);
 
-        int indexBegin = pageNumber == null || pageNumber == 0 ? 0 : pageNumber * 3 - 3;
-        int indexEnd   = Math.min((pageNumber == null || pageNumber == 0 ? 3 : pageNumber * 3), transactions.size());
+        int indexBegin = page == null || page == 0 ? 0 : page * 3 - 3;
+        int indexEnd   = Math.min((page == null || page == 0 ? 3 : page * 3), transactions.size());
 
+        model.addAttribute("alert", alert);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("beneficiaries", currentUser.getContacts());
         model.addAttribute("transactions", transactions.subList(indexBegin, indexEnd));
         model.addAttribute("totalTransactions", transactions.size());
         model.addAttribute("totalPages", transactions.size() / 3);
-        model.addAttribute("alert", alert);
 
         return "transactions";
     }
@@ -99,19 +99,22 @@ public class TransactionController {
 
         transaction.setDonor(currentUser);
 
-        if (this.validate(transaction, redirectAttributes)) {
+        if (!this.validate(transaction, redirectAttributes)) {
 
-            return "redirect:transaction";
+            return "redirect:transactions";
         }
 
         if (this.transactionService.create(transaction) != null) {
 
             redirectAttributes.addAttribute("alert", "success");
+        } else {
+
+            redirectAttributes.addAttribute("alert", "failed");
         }
 
         LOGGER.info(String.format("Invoice - Bank transfer from user %s (sender) to user %s (beneficiary), amounting to %s, the fee is %s.", transaction.getDonor()
-                                                                                                                                                        .getIban(), transaction.getBeneficiary()
-                                                                                                                                                                               .getId(), transaction.getAmount(), transaction.getAmount() * .05));
+                                                                                                                                                        .getId(), transaction.getBeneficiary()
+                                                                                                                                                                             .getId(), transaction.getAmount(), transaction.getAmount() * .05));
 
         return "redirect:transactions";
     }
@@ -148,7 +151,7 @@ public class TransactionController {
             return false;
         }
 
-        if (transaction.getDonor() == transaction.getBeneficiary()) {
+        if (transaction.getDonor().getId().equals(transaction.getBeneficiary().getId())) {
 
             redirectAttributes.addAttribute("alert", "failed");
             return false;

@@ -8,8 +8,9 @@ spring.sql.init.mode                                        = always
 spring.jpa.properties.hibernate.format_sql                  = true
 
 #Pretty Logging JPA Queries (recommended)
-logging.level.org.hibernate.SQL                             = DEBUG
-logging.level.org.hibernate.type.description.sql.format_sql = debug
-logging.level.org.hibernate.type.descriptor.sql.BasicBinder = TRACE
+#logging.level.org.hibernate.SQL                             = trace
+#logging.level.org.hibernate.type.description.sql.format_sql = debug
+#logging.level.org.hibernate.type.descriptor.sql.BasicBinder = trace
+logging.level.com.paymybuddy.paymybuddy.controllers = info
 
 logging.file.name                                        = logs/paymybuddy.log
